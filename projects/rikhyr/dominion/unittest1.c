@@ -24,10 +24,10 @@
 #include <math.h>
 
 int main() 
-{int randomSeed;
+{
     SelectStream(1);
 	PutSeed(-1);
-    int i, r, j, locVal, zeros; // auxilliary  vars
+    int i, j; // auxilliary  vars
     int numPlayer = 2; // setting minimal count of players
     int k[10] = {adventurer, gardens, smithy, village, sea_hag, treasure_map, outpost, cutpurse, tribute, salvager};
     struct gameState G, copyG;
@@ -38,10 +38,10 @@ int main()
     
 	
     memset(&G, 23, sizeof(struct gameState));   // clear the game state
-    r = initializeGame(numPlayer, k, seed, &G); // initialize a new game
+    i = initializeGame(numPlayer, k, seed, &G); // initialize a new game
     memcpy(&copyG, &G, sizeof(struct gameState)); // save the game state before we start checking isGameOver
 	// test if shuffle returns -1 if we set count of cards to 0
-	locVal=G.deckCount[0]; //should be 10 after game initialization
+	//locVal=G.deckCount[0]; //should be 10 after game initialization
 	G.deckCount[0]=0;
 	printf("Force first player deck count to be 0 to see if shuffle() returns -1.\n");
     if (shuffle(0, &G) != -1)
@@ -97,40 +97,27 @@ int main()
     }
     for (j = 0; j < numPlayer; j++)
     {
-        if (cmpDeckCount(&G, &copyG, j))
-            printf("Deck Count has changed between copied and modified game state!\n");
+        (cmpDeckCount(&G, &copyG, j)) ? printf("Deck Count has changed between copied and modified game state!\n"):printf("Deck Count untouched\n");
         
-		if (cmpDiscard(&G, &copyG, j))
-            printf("Discard deck has changed between copied and modified game state!\n");
+	(cmpDiscard(&G, &copyG, j)) ? printf("Discard deck has changed between copied and modified game state!\n"):printf("Discard deck untouched\n");
 		
-        if (cmpDiscardCount(&G, &copyG, j))
-            printf("Discard count has been changed between copied and modified game state!\n");
+    (cmpDiscardCount(&G, &copyG, j)) ? printf("Discard count has been changed between copied and modified game state!\n"):printf("Discard count untouched\n");
         
-		if (cmpDeck(&G, &copyG, j))
-            printf("Deck has changed between copied and modified game state!\n");
+	(cmpDeck(&G, &copyG, j)) ? printf("Deck has changed between copied and modified game state!\n"): printf("Deck untouched\n");
 		//This message should appear because we changed decks
     }
     printf("Testing general game state variables if they've been changed ...\n");
     printf("This will test to see if our copied game state before we performed shuffle testing is equal to the modified game state.\n");
     
-    if (cmpPlayedCards(&G, &copyG))
-        printf("playedCards has changed between copied and modified game state!\n");
-    if (cmpPlayedCardCount(&G, &copyG))
-        printf("playedCardCount has changed between copied and modified game state!\n");
-    if (cmpPhase(&G, &copyG))
-        printf("phase has changed between copied and modified game state!\n");
-    if (cmpWhoseTurn(&G, &copyG))
-        printf("WhoseTurn has changed between copied and modified game state!\n");
-    if (cmpNumActions(&G, &copyG))
-        printf("numActions has changed between copied and modified game state!\n");
-    if (cmpOutpostPlayed(&G, &copyG))
-        printf("OutpostPlayed has changed between copied and modified game state!\n");
-    if (cmpNumPlayers(&G, &copyG))
-        printf("NumPlayers has changed between copied and modified game state!\n");
-    if (cmpNumBuys(&G, &copyG))
-        printf("NumBuys has changed between copied and modified game state!\n");
-    if (cmpOutpostTurn(&G, &copyG))
-        printf("OutpostTurn has changed between copied and modified game state!\n");
+    (cmpPlayedCards(&G, &copyG)) ? printf("PlayedCards has changed between copied and modified game state!\n"): printf("PlayedCards untouched!\n");
+    (cmpPlayedCardCount(&G, &copyG)) ? printf("playedCardCount has changed between copied and modified game state!\n"): printf("PlayedCardsCount untouched\n");
+    (cmpPhase(&G, &copyG)) ? printf("phase has changed between copied and modified game state!\n"):printf("phase untouched\n");
+    (cmpWhoseTurn(&G, &copyG)) ? printf("WhoseTurn has changed between copied and modified game state!\n"):printf("WhooseTurn untouched\n"); 
+    (cmpNumActions(&G, &copyG)) ? printf("numActions has changed between copied and modified game state!\n"):printf("numActions untouched\n");
+    (cmpOutpostPlayed(&G, &copyG)) ? printf("OutpostPlayed has changed between copied and modified game state!\n"):printf("OutpostPlayed untouched\n");
+    (cmpNumPlayers(&G, &copyG)) ? printf("NumPlayers has changed between copied and modified game state!\n"):printf("NumPlayers untouched\n");
+    (cmpNumBuys(&G, &copyG)) ? printf("NumBuys has changed between copied and modified game state!\n"):printf("NumBuys untouched\n");
+    (cmpOutpostTurn(&G, &copyG)) ? printf("OutpostTurn has changed between copied and modified game state!\n"):printf("OutpostTurn untouched\n");
     printf("Done checking game states.\n");
     printf("\nAll tests done for shuffle()!\n \n");
     return 0;
