@@ -1,0 +1,245 @@
+        -:    0:Source:randomtestcard3.c
+        -:    0:Graph:randomtestcard3.gcno
+        -:    0:Data:randomtestcard3.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2:* RR
+        -:    3:* CS 362
+        -:    4:* WhoseTurn() Unit Test
+        -:    5:*
+        -:    6:* 1. Test council_room();
+        -:    7:*
+        -:    8:* Check for occasional changes of game state inbetween testing runs.
+        -:    9:* 
+        -:   10:* 
+        -:   11:*/
+        -:   12:
+        -:   13:
+        -:   14:#include "dominion.h"
+        -:   15:#include "dominion_helpers.h"
+        -:   16:#include <string.h>
+        -:   17:#include <stdio.h>
+        -:   18:#include <assert.h>
+        -:   19:#include "rngs.h"
+        -:   20:#include "compareStates.h"
+        -:   21:#include <stdlib.h>
+        -:   22:#include <time.h>
+        -:   23:#include <math.h>
+        -:   24:
+function correct_council_room called 1000 returned 100% blocks executed 100%
+     1000:   25:int correct_council_room(int currentPlayer, struct gameState *state, int handPos)
+        -:   26:{
+        -:   27:int i;
+        -:   28:
+        -:   29:      //+4 Cards
+     5000:   30:      for (i = 0; i < 4; i++) 
+переход  0 выполнен 4000
+переход  1 выполнен 1000 (fallthrough)
+        -:   31:	{
+     4000:   32:	  drawCard(currentPlayer, state);
+вызов    0 вернул 4000
+        -:   33:	}
+        -:   34:
+        -:   35:      //+1 Buy
+     1000:   36:      state->numBuys++;
+        -:   37:
+        -:   38:      //Each other player draws a card
+     5000:   39:      for (i = 0; i < state->numPlayers; i++)
+переход  0 выполнен 4000
+переход  1 выполнен 1000 (fallthrough)
+        -:   40:	{
+     4000:   41:	  if ( i != currentPlayer )
+переход  0 выполнен 3000 (fallthrough)
+переход  1 выполнен 1000
+        -:   42:	    {
+     3000:   43:	      drawCard(i, state);
+вызов    0 вернул 3000
+        -:   44:	    }
+        -:   45:	}
+        -:   46:
+        -:   47:      //put played card in played card pile
+     1000:   48:      discardCard(handPos, currentPlayer, state, 0);
+вызов    0 вернул 1000
+        -:   49:
+     1000:   50:      return 0;
+        -:   51:}
+        -:   52:
+function main called 1 returned 100% blocks executed 86%
+        1:   53:int main() 
+        -:   54:{
+        1:   55:    SelectStream(1);
+вызов    0 вернул 1
+        1:   56:	PutSeed(-1);
+вызов    0 вернул 1
+        -:   57:    int i, r, j, locVal1, locVal2, zeros, seed; // auxilliary  vars
+        1:   58:    int numPlayer = 4; // setting maximal count of players
+        1:   59:    int k[10] = {adventurer, gardens, smithy, village, council_room, treasure_map, outpost, cutpurse, tribute, salvager};
+        -:   60:    struct gameState G, copyG;
+        -:   61:    
+        -:   62:
+        1:   63:    srand(time(NULL));
+вызов    0 вернул 1
+вызов    1 вернул 1
+        1:   64:    printf ("\nTESTING council_room\n");
+вызов    0 вернул 1
+        -:   65:    
+        -:   66:	
+        -:   67:
+        -:   68:    
+     1001:   69:	for (i=0; i<1000; i++)
+переход  0 выполнен 1000
+переход  1 выполнен 1 (fallthrough)
+     1000:   70:	{seed = floor(Random() * 1000);
+вызов    0 вернул 1000
+     1000:   71:	memset(&G, 23, sizeof(struct gameState));   // clear the game state
+     1000:   72:    r = initializeGame(numPlayer, k, seed, &G); // initialize a new game
+вызов    0 вернул 1000
+        -:   73:	
+     1000:   74:		G.deckCount[0]=floor(Random() * 5); //generate random amound of cards in a deck
+вызов    0 вернул 1000
+     1000:   75:	G.discardCount[0]=15-G.deckCount[0];
+     2064:   76:	for (j=0; j<G.deckCount[0]; j++) //generate randomly cards in a deck
+переход  0 выполнен 1064
+переход  1 выполнен 1000 (fallthrough)
+        -:   77:	{
+     1064:   78:		r=floor(Random()*27);
+вызов    0 вернул 1064
+    10366:   79:		for(zeros=curse;zeros<=r;zeros++)
+переход  0 выполнен 9302
+переход  1 выполнен 1064 (fallthrough)
+     9302:   80:			G.deck[0][j]=zeros;
+        -:   81:	};
+    14936:   82:	for (j=0; j<G.discardCount[0]; j++) //generate randomly cards in dicard
+переход  0 выполнен 13936
+переход  1 выполнен 1000 (fallthrough)
+        -:   83:	{
+    13936:   84:		r=floor(Random()*27);
+вызов    0 вернул 13936
+   209561:   85:		for(zeros=curse;zeros<=r;zeros++)
+переход  0 выполнен 195625
+переход  1 выполнен 13936 (fallthrough)
+   195625:   86:			G.discard[0][j]=zeros;
+        -:   87:	};
+        -:   88:	
+        -:   89:	
+     1000:   90:	memcpy(&copyG, &G, sizeof(struct gameState)); // save the game state before we start checking isGameOver
+     1000:   91:	r=0;
+     1000:   92:	j=0;
+     1000:   93:	zeros=0;
+     1000:   94:	locVal1=councilRoomCard(&G, zeros,r,j); //number and order of variables adjusted to comply with the original code by vidkjerd
+вызов    0 вернул 1000
+     1000:   95:	locVal2=correct_council_room(zeros,&copyG,r);
+вызов    0 вернул 1000
+        -:   96:	
+        -:   97:	
+     1000:   98:    (locVal1!=locVal2) ? printf("Error with random testing, either of the functions failed.\n"):printf("Control sets identical.\n");
+переход  0 выполнен 0 (fallthrough)
+переход  1 выполнен 1000
+вызов   2 ни разу не исполнялся
+вызов    3 вернул 1000
+        -:   99:	
+     1000:  100:	printf("\nTest %d: Testing general game state variables if they've been changed ...\n",i);
+вызов    0 вернул 1000
+     1000:  101:    printf("This will test to see if our copied game state before we performed council_room testing is equal to the modified game state.\n");
+вызов    0 вернул 1000
+        -:  102:    
+     5000:  103:    for (j = 0; j < numPlayer; j++)
+переход  0 выполнен 4000
+переход  1 выполнен 1000 (fallthrough)
+        -:  104:    {
+     4000:  105:	printf("\nPlayer %d\n",j);
+вызов    0 вернул 4000
+     4000:  106:    (cmpDeckCount(&G, &copyG, j)) ? printf("-Deck Count has changed between copied and modified game state! %d and %d \n", G.deckCount[0],copyG.deckCount[0]):printf("Deck Count untouched\n");
+вызов    0 вернул 4000
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 4000
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 4000
+        -:  107:        
+     4000:  108:	(cmpDiscard(&G, &copyG, j)) ? printf("-Discard deck has changed between copied and modified game state!\n"):printf("Discard deck untouched\n");
+вызов    0 вернул 4000
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 4000
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 4000
+        -:  109:		
+     4000:  110:    (cmpDiscardCount(&G, &copyG, j)) ? printf("-Discard count has been changed between copied and modified game state! %d and %d \n", G.discardCount[0], copyG.discardCount[0]):printf("Discard count untouched\n");
+вызов    0 вернул 4000
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 4000
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 4000
+        -:  111:        
+     4000:  112:	(cmpDeck(&G, &copyG, j)) ? printf("-Deck has changed between copied and modified game state! \n"): printf("Deck untouched\n");
+вызов    0 вернул 4000
+переход  1 выполнен 989 (fallthrough)
+переход  2 выполнен 3011
+вызов    3 вернул 989
+вызов    4 вернул 3011
+        -:  113:	
+        -:  114:    }
+        -:  115:
+        -:  116:    
+     1000:  117:    (cmpPlayedCards(&G, &copyG)) ? printf("PlayedCards has changed between copied and modified game state!\n"): printf("PlayedCards untouched!\n");
+вызов    0 вернул 1000
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 1000
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 1000
+     1000:  118:    (cmpPlayedCardCount(&G, &copyG)) ? printf("playedCardCount has changed between copied and modified game state!\n"): printf("PlayedCardsCount untouched\n");
+вызов    0 вернул 1000
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 1000
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 1000
+     1000:  119:    (cmpPhase(&G, &copyG)) ? printf("phase has changed between copied and modified game state!\n"):printf("phase untouched\n");
+вызов    0 вернул 1000
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 1000
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 1000
+     1000:  120:    (cmpWhoseTurn(&G, &copyG)) ? printf("WhoseTurn has changed between copied and modified game state!\n"):printf("WhooseTurn untouched\n"); 
+вызов    0 вернул 1000
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 1000
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 1000
+     1000:  121:    (cmpNumActions(&G, &copyG)) ? printf("numActions has changed between copied and modified game state!\n"):printf("numActions untouched\n");
+вызов    0 вернул 1000
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 1000
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 1000
+     1000:  122:    (cmpOutpostPlayed(&G, &copyG)) ? printf("OutpostPlayed has changed between copied and modified game state!\n"):printf("OutpostPlayed untouched\n");
+вызов    0 вернул 1000
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 1000
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 1000
+     1000:  123:    (cmpNumPlayers(&G, &copyG)) ? printf("NumPlayers has changed between copied and modified game state!\n"):printf("NumPlayers untouched\n");
+вызов    0 вернул 1000
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 1000
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 1000
+     1000:  124:    (cmpNumBuys(&G, &copyG)) ? printf("NumBuys has changed between copied and modified game state!\n"):printf("NumBuys untouched\n");
+вызов    0 вернул 1000
+переход  1 выполнен 1000 (fallthrough)
+переход  2 выполнен 0
+вызов    3 вернул 1000
+вызов   4 ни разу не исполнялся
+     1000:  125:    (cmpOutpostTurn(&G, &copyG)) ? printf("OutpostTurn has changed between copied and modified game state!\n"):printf("OutpostTurn untouched\n");
+вызов    0 вернул 1000
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 1000
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 1000
+        -:  126:	};
+        -:  127:	
+        1:  128:    printf("Done checking game states.\n");
+вызов    0 вернул 1
+        1:  129:    printf("\nAll tests done for council_room!\n \n");
+вызов    0 вернул 1
+        1:  130:    return 0;
+        -:  131:}

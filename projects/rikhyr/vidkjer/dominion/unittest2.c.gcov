@@ -1,0 +1,209 @@
+        -:    0:Source:unittest2.c
+        -:    0:Graph:unittest2.gcno
+        -:    0:Data:unittest2.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2:* RR
+        -:    3:* CS 362
+        -:    4:* WhoseTurn() Unit Test
+        -:    5:*
+        -:    6:* 1. Check correct player move turn handling
+        -:    7:*
+        -:    8:* Check for occasional changes of game state inbetween testing runs.
+        -:    9:* 
+        -:   10:* 
+        -:   11:*/
+        -:   12:
+        -:   13:
+        -:   14:#include "dominion.h"
+        -:   15:#include "dominion_helpers.h"
+        -:   16:#include <string.h>
+        -:   17:#include <stdio.h>
+        -:   18:#include <assert.h>
+        -:   19:#include "rngs.h"
+        -:   20:#include "compareStates.h"
+        -:   21:#include <stdlib.h>
+        -:   22:#include <time.h>
+        -:   23:#include <math.h>
+        -:   24:
+function main called 1 returned 100% blocks executed 83%
+        1:   25:int main() 
+        -:   26:{
+        1:   27:    SelectStream(1);
+вызов    0 вернул 1
+        1:   28:	PutSeed(-1);
+вызов    0 вернул 1
+        -:   29:    int i, j, zeros; // auxilliary  vars
+        1:   30:    int numPlayer = 4; // setting maximal count of players
+        1:   31:    int k[10] = {adventurer, gardens, smithy, village, sea_hag, treasure_map, outpost, cutpurse, tribute, salvager};
+        -:   32:    struct gameState G, copyG;
+        1:   33:    int seed = floor(Random() * 1000);
+вызов    0 вернул 1
+        -:   34:
+        1:   35:    srand(time(NULL));
+вызов    0 вернул 1
+вызов    1 вернул 1
+        1:   36:    printf ("\nTESTING whoseTurn():\n");
+вызов    0 вернул 1
+        -:   37:    
+        -:   38:	
+        1:   39:    memset(&G, 23, sizeof(struct gameState));   // clear the game state
+        1:   40:    zeros = initializeGame(numPlayer, k, seed, &G); // initialize a new game
+вызов    0 вернул 1
+        1:   41:    memcpy(&copyG, &G, sizeof(struct gameState)); // save the game state before we start checking isGameOver
+        -:   42:	
+        1:   43:	printf("Current player numbershould be 0 initially to see if whoseTurn() returns 0.\n");
+вызов    0 вернул 1
+        1:   44:    if (whoseTurn(&G) != 0)
+вызов    0 вернул 1
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 1
+        -:   45:    {
+    #####:   46:        printf("Current turn should be with player 0, but whoseTurn() was not 0.\n");
+вызов   0 ни разу не исполнялся
+        -:   47:    }
+        1:   48:    printf("Running 1000 random tests for first player deck count to verify shuffle is -1 when deck amount is 0.\n");
+вызов    0 вернул 1
+     1001:   49:    for (i = 0; i < 1000; i++)
+переход  0 выполнен 1000
+переход  1 выполнен 1 (fallthrough)
+        -:   50:    {
+     1000:   51:        int localDeck = rand() % (numPlayer-1);
+вызов    0 вернул 1000
+     1000:   52:        G.whoseTurn = localDeck;
+     1000:   53:		zeros=whoseTurn(&G);
+вызов    0 вернул 1000
+     1000:   54:        if ((zeros<0)||(zeros>3))
+переход  0 выполнен 1000 (fallthrough)
+переход  1 выполнен 0
+переход  2 выполнен 0 (fallthrough)
+переход  3 выполнен 1000
+        -:   55:        {
+    #####:   56:			printf("Test %d. Turn should be at player %d, but whoseTurn returned value out of allowed range: %d.\n",i,localDeck,zeros);
+вызов   0 ни разу не исполнялся
+        -:   57:		}
+        -:   58:		
+     1000:   59:        if (zeros != localDeck)
+переход  0 выполнен 0 (fallthrough)
+переход  1 выполнен 1000
+        -:   60:        {
+    #####:   61:            printf("Test %d: whoseTurn() failed to get correct turn.\n",i);
+вызов   0 ни разу не исполнялся
+        -:   62:        }
+        -:   63:        
+        -:   64:    }
+        1:   65:    printf("Done with  random testing.\n");
+вызов    0 вернул 1
+        -:   66:	
+        1:   67:	G.deckCount[0]=10;
+        1:   68:	G.deck[0][0]=curse;
+        1:   69:	G.deck[0][1]=estate;
+        1:   70:	G.deck[0][2]=duchy;
+        1:   71:	G.deck[0][3]=province;
+        1:   72:	G.deck[0][4]=copper;
+        1:   73:	G.deck[0][5]=silver;
+        1:   74:	G.deck[0][6]=gold;
+        1:   75:	G.deck[0][7]=adventurer;
+        1:   76:	G.deck[0][8]=smithy;
+        1:   77:	G.deck[0][9]=gardens;
+        -:   78:	
+        -:   79:    
+        5:   80:    for (j = 0; j < numPlayer; j++)
+переход  0 выполнен 4
+переход  1 выполнен 1 (fallthrough)
+        -:   81:    {
+        4:   82:    (cmpDeckCount(&G, &copyG, j)) ? printf("Deck Count has changed between copied and modified game state!\n"):printf("Deck Count untouched\n");
+вызов    0 вернул 4
+переход  1 выполнен 1 (fallthrough)
+переход  2 выполнен 3
+вызов    3 вернул 1
+вызов    4 вернул 3
+        -:   83:        
+        4:   84:	(cmpDiscard(&G, &copyG, j)) ? printf("Discard deck has changed between copied and modified game state!\n"):printf("Discard deck untouched\n");
+вызов    0 вернул 4
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 4
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 4
+        -:   85:		
+        4:   86:    (cmpDiscardCount(&G, &copyG, j)) ? printf("Discard count has been changed between copied and modified game state!\n"):printf("Discard count untouched\n");
+вызов    0 вернул 4
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 4
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 4
+        -:   87:        
+        4:   88:	(cmpDeck(&G, &copyG, j)) ? printf("Deck has changed between copied and modified game state!\n"): printf("Deck untouched\n");
+вызов    0 вернул 4
+переход  1 выполнен 1 (fallthrough)
+переход  2 выполнен 3
+вызов    3 вернул 1
+вызов    4 вернул 3
+        -:   89:	
+        -:   90:    }
+        1:   91:    printf("Testing general game state variables if they've been changed ...\n");
+вызов    0 вернул 1
+        1:   92:    printf("This will test to see if our copied game state before we performed whoseTurn() testing is equal to the modified game state.\n");
+вызов    0 вернул 1
+        -:   93:    
+        1:   94:    (cmpPlayedCards(&G, &copyG)) ? printf("PlayedCards has changed between copied and modified game state!\n"): printf("PlayedCards untouched!\n");
+вызов    0 вернул 1
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 1
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 1
+        1:   95:    (cmpPlayedCardCount(&G, &copyG)) ? printf("playedCardCount has changed between copied and modified game state!\n"): printf("PlayedCardsCount untouched\n");
+вызов    0 вернул 1
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 1
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 1
+        1:   96:    (cmpPhase(&G, &copyG)) ? printf("phase has changed between copied and modified game state!\n"):printf("phase untouched\n");
+вызов    0 вернул 1
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 1
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 1
+        1:   97:    (cmpWhoseTurn(&G, &copyG)) ? printf("WhoseTurn has changed between copied and modified game state!\n"):printf("WhooseTurn untouched\n"); 
+вызов    0 вернул 1
+переход  1 выполнен 1 (fallthrough)
+переход  2 выполнен 0
+вызов    3 вернул 1
+вызов   4 ни разу не исполнялся
+        1:   98:    (cmpNumActions(&G, &copyG)) ? printf("numActions has changed between copied and modified game state!\n"):printf("numActions untouched\n");
+вызов    0 вернул 1
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 1
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 1
+        1:   99:    (cmpOutpostPlayed(&G, &copyG)) ? printf("OutpostPlayed has changed between copied and modified game state!\n"):printf("OutpostPlayed untouched\n");
+вызов    0 вернул 1
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 1
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 1
+        1:  100:    (cmpNumPlayers(&G, &copyG)) ? printf("NumPlayers has changed between copied and modified game state!\n"):printf("NumPlayers untouched\n");
+вызов    0 вернул 1
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 1
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 1
+        1:  101:    (cmpNumBuys(&G, &copyG)) ? printf("NumBuys has changed between copied and modified game state!\n"):printf("NumBuys untouched\n");
+вызов    0 вернул 1
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 1
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 1
+        1:  102:    (cmpOutpostTurn(&G, &copyG)) ? printf("OutpostTurn has changed between copied and modified game state!\n"):printf("OutpostTurn untouched\n");
+вызов    0 вернул 1
+переход  1 выполнен 0 (fallthrough)
+переход  2 выполнен 1
+вызов   3 ни разу не исполнялся
+вызов    4 вернул 1
+        1:  103:    printf("Done checking game states.\n");
+вызов    0 вернул 1
+        1:  104:    printf("\nAll tests done for whoseTurn()!\n \n");
+вызов    0 вернул 1
+        1:  105:    return 0;
+        -:  106:}
