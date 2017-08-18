@@ -428,7 +428,7 @@ public class UrlValidatorTest extends TestCase {
         	 num_failed_tests++;
         	 };
 		 
-		 loc_url+=basic_port;
+		 loc_url+=":"+basic_port;
 		 System.out.println("Testing correct protocol and port handling: "+loc_url);
          if (urlVal.isValid(loc_url)!=true)
         	 {
@@ -482,7 +482,7 @@ public class UrlValidatorTest extends TestCase {
 		 
 		 loc_url=mainvalidschemes[i].substring(0,2)+'0'+mainvalidschemes[i].substring(3);
 		 //loc_url.setCharAt(2,'0');
-		 loc_url+=basic_port;
+		 loc_url+=basic_url;
 		 System.out.println("Testing incorrect protocol handling: "+loc_url);
          if (urlVal.isValid(loc_url)!=false)
         	 {
@@ -490,7 +490,7 @@ public class UrlValidatorTest extends TestCase {
         	 num_failed_tests++;
         	 };
 		 
-		 loc_url+=basic_port;
+		 loc_url+=":"+basic_port;
 		 System.out.println("Testing incorrect protocol and correct port handling: "+loc_url);
          if (urlVal.isValid(loc_url)!=false)
         	 {
@@ -551,7 +551,7 @@ public class UrlValidatorTest extends TestCase {
         	 num_failed_tests++;
         	 };
 		 
-		 loc_url+=basic_port;
+		 loc_url+=":"+basic_port;
 		 System.out.println("Testing correct protocol, correct port and correct login  handling: "+loc_url);
          if (urlVal.isValid(loc_url)!=true)
         	 {
@@ -609,7 +609,7 @@ public class UrlValidatorTest extends TestCase {
         	 num_failed_tests++;
         	 };
 		 
-		 loc_url+=basic_port;
+		 loc_url+=":"+basic_port;
 		 System.out.println("Testing correct protocol, port and incorrect login handling: "+loc_url);
          if (urlVal.isValid(loc_url)!=false)
         	 {
@@ -667,7 +667,7 @@ public class UrlValidatorTest extends TestCase {
         	 num_failed_tests++;
         	 };
 		 
-		 loc_url+=basic_port;
+		 loc_url+=":"+basic_port;
 		 System.out.println("Testing correct protocol, port, login and password handling: "+loc_url);
          if (urlVal.isValid(loc_url)!=true)
         	 {
@@ -725,7 +725,7 @@ public class UrlValidatorTest extends TestCase {
         	 num_failed_tests++;
         	 };
 		 
-		 loc_url+=basic_port;
+		 loc_url+=":"+basic_port;
 		 System.out.println("Testing correct protocol, port and incorrect login&password pair handling: "+loc_url);
          if (urlVal.isValid(loc_url)!=false)
         	 {
@@ -741,7 +741,7 @@ public class UrlValidatorTest extends TestCase {
         	 num_failed_tests++;
         	 };
 		 
-		 loc_url+=basic_port;
+		 loc_url+=":"+basic_port;
 		 System.out.println("Testing correct protocol,port and incorrect login&password pair handling: "+loc_url);
          if (urlVal.isValid(loc_url)!=false)
         	 {
@@ -764,7 +764,7 @@ public class UrlValidatorTest extends TestCase {
         	 num_failed_tests++;
         	 };
 		 
-		 loc_url+=basic_port;
+		 loc_url+=":"+basic_port;
 		 System.out.println("Testing correct protocol,port and incorrect login&password pair handling: "+loc_url);
          if (urlVal.isValid(loc_url)!=false)
         	 {
