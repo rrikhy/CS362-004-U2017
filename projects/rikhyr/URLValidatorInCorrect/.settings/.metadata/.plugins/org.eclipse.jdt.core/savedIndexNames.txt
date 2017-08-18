@@ -1,3 +1,2 @@
 INDEX VERSION 1.130+F:\Docs\BCP\Trud\Upwork\Math\CS362-004-U2017-master\CS362-004-U2017-master\FinalProject\URLValidatorInCorrect\.settings\.metadata\.plugins\org.eclipse.jdt.core
-2365729616.index
 1067094681.index

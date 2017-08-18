@@ -355,10 +355,6 @@ public class UrlValidatorTest extends TestCase {
    String[] basic_urls = {"www.google.com","localhost","3.141.52.96","[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]","[1080:0:0:0:8:800:200C:4171]", "[3ffe:2a00:100:7031::1]","[1080::8:800:200C:417A]","[::192.9.5.5]","[::FFFF:129.144.52.38]","[2010:836B:4179::836B:4179]"};
    //IPv6 addressing in accordance with http://www.ietf.org/rfc/rfc2732.txt
    
-   System.out.println("=======================================================");	 
-	System.out.println("Running Programming Based Unit Tests...");	   
-	System.out.println("-------------------------------------------------------");
-   
    //String basic_user = "user";
    //String basic_password = "password";
    String basic_uri = "search";
@@ -367,7 +363,6 @@ public class UrlValidatorTest extends TestCase {
    String loc_url = "";
    String basic_url = "";
    String loc_txt = "";
-   int num_failed_tests = 0;
    //String[] valid_delimeters = {":","/","@","#"};
    //String[] invalid_host_signs = {"\"","'","`","\\",",","_","%","?","!","=","[","]","{","}","&"," "};
    String[] mainvalidschemes = {"bittorrent://","callto://","callto:","feed://","file://","ftp://","gopher://","http://","https://","h3t://","LDAP://","magnet://","mailto://","mailto:","MMS://","mql5buy://","res://","skype://","tel://","viber://"};
@@ -380,418 +375,194 @@ public class UrlValidatorTest extends TestCase {
 		 
 		 loc_url=mainvalidschemes[i]+basic_url;
 		 System.out.println("Testing correct protocol handling: "+loc_url);
-         if (urlVal.isValid(loc_url)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url), true);
 		 
 		 System.out.println("Testing correct protocol handling with correct anchoring: "+loc_url+"/"+basic_anchor);
-         if (urlVal.isValid(loc_url+"/"+basic_anchor)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_anchor), true);
 		 
 		 System.out.println("Testing correct protocol handling with incorrect anchoring: "+loc_url+basic_anchor);
-         if (urlVal.isValid(loc_url+basic_anchor)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+basic_anchor), false);
 		 
 		 System.out.println("Testing correct protocol and URI handling: "+loc_url+"/"+basic_uri);
-         if (urlVal.isValid(loc_url+"/"+basic_uri)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_uri), true);
 		 
 		 System.out.println("Testing correct protocol and URI with anchor handling: "+loc_url+"/"+basic_uri+basic_anchor);
-         if (urlVal.isValid(loc_url+"/"+basic_uri+basic_anchor)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_uri+basic_anchor), true);
 		 
 		 System.out.println("Testing correct protocol, URI with incorrect anchor handling: "+loc_url+"/"+basic_uri+"#"+basic_anchor);
-         if (urlVal.isValid(loc_url+"/"+basic_uri+"#"+basic_anchor)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 }; //multiple sequential "#" are not allowed
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_uri+"#"+basic_anchor), false); //multiple sequential "#" are not allowed
 		 
 		 System.out.println("Testing correct protocol and incorrect URI handling: "+loc_url+"/ "+basic_uri);
-         if (urlVal.isValid(loc_url+"/ "+basic_uri)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/ "+basic_uri), false);
 		 
 		 loc_url+=basic_port;
 		 System.out.println("Testing correct protocol and port handling: "+loc_url);
-         if (urlVal.isValid(loc_url)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url), true);
 		 
 		 System.out.println("Testing correct protocol, port and anchor handling: "+loc_url+"/"+basic_anchor);
-         if (urlVal.isValid(loc_url+"/"+basic_anchor)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_anchor), true);
 		 
 		 System.out.println("Testing correct protocol, port and incorrect anchor handling: "+loc_url+"/"+basic_anchor+basic_anchor); 
 		 //sequential anchors not allowed!
-         if (urlVal.isValid(loc_url+"/"+basic_anchor+basic_anchor)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_anchor+basic_anchor), false);
 		 
 		 System.out.println("Testing correct protocol, port and URI handling: "+loc_url+"//"+basic_uri); //multiple sequential "/" in URI are allowed!!!
-         if (urlVal.isValid(loc_url+"//"+basic_uri)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"//"+basic_uri), true);
 		 
 		 System.out.println("Testing correct protocol, port, URI and anchor handling: "+loc_url+"/"+basic_uri+basic_anchor); 
-         if (urlVal.isValid(loc_url+"/"+basic_uri+basic_anchor)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_uri+basic_anchor), true);
 		 
 		 System.out.println("Testing correct protocol, port, URI and incorrect anchor handling: "+loc_url+"/"+basic_uri+"?"+basic_anchor); 
-         if (urlVal.isValid(loc_url+"/"+basic_uri+"?"+basic_anchor)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_uri+"?"+basic_anchor), false); 
 		 // "?" request should be followed by variables with values set, not the constant definition like structure.
 		 
 		 System.out.println("Testing correct protocol, port and incorrect URI handling: "+loc_url+"#"+basic_uri);
-         if (urlVal.isValid(loc_url+"#"+basic_uri)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"#"+basic_uri), false);
 		 
 		 loc_url=mainvalidschemes[i].substring(0,2)+'0'+mainvalidschemes[i].substring(3);
 		 //loc_url.setCharAt(2,'0');
 		 loc_url+=basic_port;
 		 System.out.println("Testing incorrect protocol handling: "+loc_url);
-         if (urlVal.isValid(loc_url)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url), false);
 		 
 		 loc_url+=basic_port;
 		 System.out.println("Testing incorrect protocol and correct port handling: "+loc_url);
-         if (urlVal.isValid(loc_url)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url), false);
 		 
 		 loc_url=mainvalidschemes[i].replace("/","");
 		 loc_txt=loc_url.replace(":","");
 		 loc_url=mainvalidschemes[i]+loc_txt+"@"+basic_url;
 		 System.out.println("Testing correct protocol and correct login handling: "+loc_url);
-         if (urlVal.isValid(loc_url)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url), true);
 		 
 		 System.out.println("Testing correct protocol, login and anchor handling: "+loc_url+"/"+basic_anchor);
-         if (urlVal.isValid(loc_url+"/"+basic_anchor)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_anchor), true);
 		 
 		 System.out.println("Testing correct protocol, login and incorrect anchor handling: "+loc_url+":"+basic_anchor);
-         if (urlVal.isValid(loc_url+":"+basic_anchor)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+":"+basic_anchor), false);
 		 
 		 System.out.println("Testing correct protocol, login and URI handling: "+loc_url+"///"+basic_uri);
-         if (urlVal.isValid(loc_url+"///"+basic_uri)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"///"+basic_uri), true);
 		 
 		 System.out.println("Testing correct protocol, login, URI and anchor handling: "+loc_url+"/"+basic_uri+basic_anchor);
-         if (urlVal.isValid(loc_url+"/"+basic_uri+basic_anchor)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_uri+basic_anchor), true);
 		 
 		 System.out.println("Testing correct protocol, login, URI and incorrect anchor handling: "+loc_url+"/"+basic_uri+basic_anchor+"?"+basic_uri);
-         if (urlVal.isValid(loc_url+"/"+basic_uri+basic_anchor+"?"+basic_uri)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_uri+basic_anchor+"?"+basic_uri), false);
 		 //no other request processing after anchor!
 		 
 		 System.out.println("Testing correct protocol, login and incorrect URI handling: "+loc_url+"/ /"+basic_uri);
-         if (urlVal.isValid(loc_url+"/ /"+basic_uri)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/ /"+basic_uri), false);
 		 
 		 loc_url+=basic_port;
 		 System.out.println("Testing correct protocol, correct port and correct login  handling: "+loc_url);
-         if (urlVal.isValid(loc_url)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url), true);
 		 
 		 System.out.println("Testing correct protocol, port login and anchor  handling: "+loc_url+"/"+basic_anchor);
-         if (urlVal.isValid(loc_url+"/"+basic_anchor)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_anchor), true);
 		 
 		 System.out.println("Testing correct protocol, port login and incorrect anchor  handling: "+loc_url+"/#:");
-         if (urlVal.isValid(loc_url+"/#:")!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/#:"), false);
 		 
 		 System.out.println("Testing correct protocol, correct port,login and URI  handling: "+loc_url+"/"+basic_uri+"//"+basic_uri);
-         if (urlVal.isValid(loc_url+"/"+basic_uri+"//"+basic_uri)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_uri+"//"+basic_uri), true);
 		 
 		 System.out.println("Testing correct protocol, correct port,login, URI and anchor  handling: "+loc_url+"/"+basic_uri+"/"+basic_uri+basic_anchor);
-         if (urlVal.isValid(loc_url+"/"+basic_uri+"/"+basic_uri+basic_anchor)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_uri+"/"+basic_uri+basic_anchor), true);
 		 
 		 System.out.println("Testing correct protocol, correct port,login, URI and incorrect anchor  handling: "+loc_url+"/"+basic_uri+"/:"+basic_anchor);
-         if (urlVal.isValid(loc_url+"/"+basic_uri+"/:"+basic_anchor)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_uri+"/:"+basic_anchor), false);
 		 
 		 loc_url=mainvalidschemes[i]+loc_txt+":"+basic_url;
 		 System.out.println("Testing correct protocol and incorrect login handling: "+loc_url);
-         if (urlVal.isValid(loc_url)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url), false);
 		 
 		 System.out.println("Testing correct protocol,URI and incorrect login handling: "+loc_url+"/"+basic_uri);
-         if (urlVal.isValid(loc_url+"/"+basic_uri)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_uri), false);
 		 
 		 loc_url+=basic_port;
 		 System.out.println("Testing correct protocol, port and incorrect login handling: "+loc_url);
-         if (urlVal.isValid(loc_url)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url), false);
 		 
 		 System.out.println("Testing correct protocol, port, URI and incorrect login handling: "+loc_url+"/"+basic_uri);
-         if (urlVal.isValid(loc_url+"/"+basic_uri)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_uri), false);
 		
 		 loc_url=mainvalidschemes[i]+loc_txt+":"+loc_txt+"@"+basic_url;
 		 System.out.println("Testing correct protocol and correct login and password handling: "+loc_url);
-         if (urlVal.isValid(loc_url)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url), true);
 		 
 		 System.out.println("Testing correct protocol and correct login and password with anchor handling: "+loc_url+"/"+basic_anchor);
-         if (urlVal.isValid(loc_url+"/"+basic_anchor)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_anchor), true);
 		 
 		 System.out.println("Testing correct protocol and correct login and password with incorrect anchor handling: "+loc_url+"/."+basic_anchor);
-         if (urlVal.isValid(loc_url+"/."+basic_anchor)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/."+basic_anchor), false);
 		 
 		 System.out.println("Testing correct protocol, login and password, URI handling: "+loc_url+"/"+basic_uri);
-         if (urlVal.isValid(loc_url+"/"+basic_uri)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_uri), true);
 		 
 		 System.out.println("Testing correct protocol, login and password, URI, anchor handling: "+loc_url+"/"+basic_uri+basic_anchor);
-         if (urlVal.isValid(loc_url+"/"+basic_uri+basic_anchor)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_uri+basic_anchor), true);
 		 
 		 System.out.println("Testing correct protocol, login and password, URI, incorrect anchor handling: "+loc_url+"/"+basic_uri+"?a="+basic_anchor);
-         if (urlVal.isValid(loc_url+"/"+basic_uri+"?a="+basic_anchor)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_uri+"?a="+basic_anchor), false);
 		 
 		 loc_url+=basic_port;
 		 System.out.println("Testing correct protocol, port, login and password handling: "+loc_url);
-         if (urlVal.isValid(loc_url)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url), true);
 		 
 		 System.out.println("Testing correct protocol, port, login and password with anchor handling: "+loc_url+"/"+basic_anchor);
-         if (urlVal.isValid(loc_url+"/"+basic_anchor)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_anchor), true);
 		 
 		 System.out.println("Testing correct protocol, port, login and password with incorrect anchor handling: "+loc_url+basic_anchor);
-         if (urlVal.isValid(loc_url+basic_anchor)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+basic_anchor), false);
 		 
 		 System.out.println("Testing correct protocol, port, URI, login and password handling: "+loc_url+"/"+basic_uri);
-         if (urlVal.isValid(loc_url+"/"+basic_uri)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_uri), true);
 		 
 		 System.out.println("Testing correct protocol, port, URI, login and password with anchor handling: "+loc_url+"/"+basic_uri+basic_anchor);
-         if (urlVal.isValid(loc_url+"/"+basic_uri+basic_anchor)!=true)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_uri+basic_anchor), true);
 		 
 		 System.out.println("Testing correct protocol, port, URI, login and password with incorrect anchor handling: "+loc_url+"/"+basic_uri+basic_anchor+"/a");
-         if (urlVal.isValid(loc_url+"/"+basic_uri+basic_anchor+"/a")!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+"/"+basic_uri+basic_anchor+"/a"), false);
 		 
 		 System.out.println("Testing correct protocol, port, login, password and incorrect URI handling: "+loc_url+":"+basic_uri);
-         if (urlVal.isValid(loc_url+":"+basic_uri)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+":"+basic_uri), false);
 		 
 		 loc_url=mainvalidschemes[i]+loc_txt+"@"+loc_txt+"@"+basic_url;
 		 System.out.println("Testing correct protocol and incorrect login&password pair handling: "+loc_url);
-         if (urlVal.isValid(loc_url)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url), false);
 		 
 		 loc_url+=basic_port;
 		 System.out.println("Testing correct protocol, port and incorrect login&password pair handling: "+loc_url);
-         if (urlVal.isValid(loc_url)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url), false);
 		 
 		 loc_url=mainvalidschemes[i]+loc_txt+"@"+loc_txt+":"+basic_url;
 		 System.out.println("Testing correct protocol and incorrect login&password pair handling: "+loc_url);
-         if (urlVal.isValid(loc_url)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url), false);
 		 
 		 loc_url+=basic_port;
 		 System.out.println("Testing correct protocol,port and incorrect login&password pair handling: "+loc_url);
-         if (urlVal.isValid(loc_url)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url), false);
 		 
 		 loc_url=mainvalidschemes[i]+loc_txt+":"+loc_txt+":"+basic_url;
 		 System.out.println("Testing correct protocol and incorrect login&password pair handling: "+loc_url);
-         if (urlVal.isValid(loc_url)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url), false);
 		 
 		 System.out.println("Testing correct protocol and incorrect URI, login&password pair handling: "+loc_url+":"+basic_uri);
-         if (urlVal.isValid(loc_url+":"+basic_uri)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+":"+basic_uri), false);
 		 
 		 loc_url+=basic_port;
 		 System.out.println("Testing correct protocol,port and incorrect login&password pair handling: "+loc_url);
-         if (urlVal.isValid(loc_url)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url), false);
 		 
 		 System.out.println("Testing correct protocol,port and incorrect URI, login&password pair handling (IPv6 like appearance): "+loc_url+":"+basic_uri);
-         if (urlVal.isValid(loc_url+":"+basic_uri)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+":"+basic_uri), false);
 		 
 		 System.out.println("Testing correct protocol,port and incorrect URI&anchor, login&password pair handling (IPv6 like appearance): "+loc_url+":"+basic_uri+":"+basic_anchor);
-         if (urlVal.isValid(loc_url+":"+basic_uri+":"+basic_anchor)!=false)
-        	 {
-        	 System.out.println("Test failed");
-        	 num_failed_tests++;
-        	 };
+         assertEquals("Failure ", urlVal.isValid(loc_url+":"+basic_uri+":"+basic_anchor), false);
 		 
 		}//j loop
 	   }//i loop 
-	   
-	   System.out.println("-------------------------------------------------------");
-		System.out.println("Programmed Unit Tests Complete.  Out of the 11000 tests run, " + num_failed_tests + " tests failed.");
-		System.out.println("=======================================================\n\n");
    } //testIsValid method
    
    public void testAnyOtherUnitTest() {
@@ -820,7 +591,7 @@ public class UrlValidatorTest extends TestCase {
       fct.testAuthority();
       
       System.out.println("Running Unit Tests");
-      fct.testIsValid();
+      //fct.testIsValid();
       
       //fct.testIsValidScheme();
       
